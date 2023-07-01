@@ -1,0 +1,10 @@
+-login
+
+-daerah->no.lebah->panen(jumlah dan tanggal)
+
+id user berhubungan dengan daerah
+daerah berhubungan dengan no lebah
+no lebah dengan panen
+
+ada tombol add dan delete di daerah, no.lebah, dan panen
+

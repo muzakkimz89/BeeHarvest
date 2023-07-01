@@ -1,0 +1,25 @@
+.place-link {
+    text-decoration: none;
+  }
+  
+  .place-container {
+    border: 2px solid black;
+    margin: 15px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  .place-image {
+    display: block;
+    margin: 0 auto;
+  }
+  
+  .place-details {
+    color: black;
+    margin-top: 10px;
+    text-align: center;
+  }
+.place-collection-heading {
+    text-align: center;
+}
