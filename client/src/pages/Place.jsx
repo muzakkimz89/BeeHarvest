@@ -6,18 +6,25 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const PlaceCollectionPage = () => {
+  //console.log(process.env.REACT_APP_URL)
+  const url=process.env.REACT_APP_URL;
   const [places, setPlaces] = useState([]);
   const owner = cookies.get("USER");
   const [newPlace, setNewPlace] = useState('');
   const fetchPlaces = async () => {
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/place/${owner}`);
+      const response = await fetch(`${url}place/${owner}`, {
+        headers: {
+          Authorization: `Bearer ${cookies.get("TOKEN")}`, // Include the auth token in the headers
+        },
+      });
       const data = await response.json();
+      console.log(data);
       setPlaces(data);
     } catch (error) {
       console.log('Error fetching places:', error);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchPlaces();
@@ -25,9 +32,10 @@ const PlaceCollectionPage = () => {
 
   const handleAddPlace = async () => {
     try {
-      const response = await fetch('https://beeharvest.muzakkimz.repl.co/api/v1/place/', {
+      const response = await fetch(`${url}place/`, {
         method: 'POST',
         headers: {
+          Authorization: `Bearer ${cookies.get("TOKEN")}`, // Include the auth token in the headers
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

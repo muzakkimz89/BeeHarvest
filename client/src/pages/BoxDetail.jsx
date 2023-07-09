@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table, Button, Form, Col, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 const BoxHarvestDetailPage = () => {
   const [harvest, setHarvest] = useState([]);
   const [box, setBox] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
   const [total, setTotal] = useState('');
   const location = useLocation();
   const url = new URL(window.location.href);
   const id = url.searchParams.get('id');
   const owner = cookies.get("USER");
   const currentTime = Math.floor(Date.now() / 1000);
-  console.log(currentTime);
+  //console.log(currentTime);
+  console.log(startDate);
+  const server=process.env.REACT_APP_URL;
+  
 
   // Fetch harvest data, date and volume
   const fetchHarvestData = async () => {
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/harvest/${id}`);
+      const response = await fetch(`${server}harvest/${id}`);
       const data = await response.json();
   
       const sortedData = data.sort((a, b) => b.timestamp - a.timestamp); // Sort by timestamp in descending order
@@ -47,7 +53,7 @@ const BoxHarvestDetailPage = () => {
   useEffect(() => {
     const fetchBox = async () => {
       try {
-        const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/box/abox/${id}`);
+        const response = await fetch(`${server}box/abox/${id}`);
         const data = await response.json();
         setBox(data);
       } catch (error) {
@@ -60,7 +66,7 @@ const BoxHarvestDetailPage = () => {
 
   const handleDelete = async (harvestId) => {
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/harvest/${harvestId}`, {
+      const response = await fetch(`${server}harvest/${harvestId}`, {
         method: 'DELETE',
       });
       console.log(response);
@@ -78,7 +84,7 @@ const BoxHarvestDetailPage = () => {
   const handleDeleteBox = async () => {
     alert("Hapus Kotak ini?");
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/box/${id}`, {
+      const response = await fetch(`${server}box/${id}`, {
         method: 'DELETE',
       });
       console.log(response);
@@ -94,9 +100,12 @@ const BoxHarvestDetailPage = () => {
   };
 
   const handleAddHarvest = async () => {
-    const currentTime = Math.floor(Date.now() / 1000);
+    //const currentTime = Math.floor(Date.now() / 1000);
+    const date = new Date(startDate);
+    const unixTimestamp = Math.floor(date.getTime() / 1000);
+    //console.log(unixTimestamp)
     try {
-      const response = await fetch('https://beeharvest.muzakkimz.repl.co/api/v1/harvest/', {
+      const response = await fetch(`${server}harvest/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +114,7 @@ const BoxHarvestDetailPage = () => {
           total: parseInt(total),
           owner:owner,
           boxId: id,
-          timestamp: currentTime
+          timestamp: unixTimestamp
         }),
       });
       console.log(response);
@@ -142,9 +151,16 @@ const BoxHarvestDetailPage = () => {
           <Form.Control type="number" value={total} onChange={(e) => setTotal(e.target.value)} />
         </Form.Group>
         <br/>
-        <Button variant="primary" onClick={handleAddHarvest}>
-          Tambah Panen
-        </Button>
+        <Row>
+          <Col>
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+          </Col>
+          <Col>
+            <Button variant="primary" onClick={handleAddHarvest}>
+              Tambah Panen
+            </Button>
+          </Col>
+        </Row>
       </Form>
       <br/>
       <Table striped bordered>

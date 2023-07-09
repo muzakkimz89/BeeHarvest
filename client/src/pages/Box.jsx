@@ -11,7 +11,7 @@ const BoxCollectionPage = () => {
   // searchParams.get("id")
   const location = useLocation();
   const url = new URL(window.location.href);
-
+  const server=process.env.REACT_APP_URL;
   //get place id
   const id = url.searchParams.get('id');
   const [newPlace, setNewPlace] = useState('');
@@ -20,7 +20,7 @@ const BoxCollectionPage = () => {
 
   const fetchPlaces = async () => {
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/box/${id}`);
+      const response = await fetch(`${server}box/${id}`);
       const data = await response.json();
       
 
@@ -48,7 +48,7 @@ const BoxCollectionPage = () => {
   const handleDeletePlace = async () => {
     alert("Hapus daerah ini?");
     try {
-      const response = await fetch(`https://beeharvest.muzakkimz.repl.co/api/v1/place/${id}`, {
+      const response = await fetch(`${server}place/${id}`, {
         method: 'DELETE',
       });
       console.log(response);
@@ -65,7 +65,7 @@ const BoxCollectionPage = () => {
 
   const handleAddPlace = async () => {
     try {
-      const response = await fetch('https://beeharvest.muzakkimz.repl.co/api/v1/box/', {
+      const response = await fetch(`${server}box/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

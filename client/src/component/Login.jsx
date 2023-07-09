@@ -8,35 +8,45 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState(false);
+    const [submit, setSubmit] = useState(false);
     const handleSubmit = (e) => {
         // prevent the form from refreshing the whole page
         e.preventDefault();
         // make a popup alert showing the "submitted" text
         alert("Submited");
+        setSubmit(true);
         const configuration = {
-            method: "post",
-            url: "https://beeharvest.muzakkimz.repl.co/api/v1/auth/login",
-            data: {
-              email,
-              password,
-            },
+          method: "post",
+          url: "https://beeharvest.muzakkimz.repl.co/api/v1/auth/login",
+          data: {
+            email,
+            password,
+          },
         };
          // make the API call
         axios(configuration)
           .then((result) => {
-          setLogin(true);
-          cookies.set("TOKEN", result.data.token, {
+            setLogin(true);
+            setSubmit(false);
+            if(result.data.message==="Passwords do not match"){
+              alert("password salah");
+            }
+            else{
+            cookies.set("TOKEN", result.data.token, {
+                path: "/",
+              });
+            cookies.set("USER", result.data.userId, {
               path: "/",
             });
-          cookies.set("USER", result.data.userId, {
-            path: "/",
-          });
-        window.location.href = "/place";
-        })
+            window.location.href = "/place";}
+          })
         .catch((error) => {
-            error = new Error();
+          if (error.response) {
+            if (error.response.status === 400 || error.response.status === 500) {
+              alert("Wrong password"); // Display error message
+            }
+          }
         });
-
       }
   return (
     <div>
@@ -71,6 +81,7 @@ const Login = () => {
           variant="primary"
           type="submit"
           onClick={(e) => handleSubmit(e)}
+          disabled={submit}
         >
           Login
         </Button>
