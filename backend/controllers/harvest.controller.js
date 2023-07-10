@@ -4,7 +4,7 @@ import Box from "../models/boxBee.js";
 export const createHarvest = async (req, res, next) =>{
     const newHarvest = new Harvest(req.body)
     //newHarvest.timestamp = new Date()
-    console.log(newHarvest);
+    //console.log(newHarvest);
     try{
         const savedHarvest = await newHarvest.save();
 
@@ -47,7 +47,7 @@ export const createHarvest = async (req, res, next) =>{
 export const getHarvest = async (req, res, next) =>{
     const boxId = req.params.id
     try{
-        console.log("boxid"+boxId);
+        //console.log("boxid"+boxId);
         const boxes = await Harvest.find({ boxId: boxId });
         res.status(200).json(boxes);
     }catch(err){
@@ -59,7 +59,7 @@ export const getHarvest = async (req, res, next) =>{
 }
 
 export const getLastHarvests = async (req, res, next) => {
-    console.log("lastharvests")
+    //console.log("lastharvests")
     try {
       const lastHarvests = await Harvest.aggregate([
         {
@@ -89,7 +89,7 @@ export const deleteHarvest = async (req, res, next) => {
         const boxes = await Harvest.findById(harvestId);
         const boxId = boxes.boxId
       const deletedHarvest = await Harvest.findByIdAndDelete(harvestId);
-        console.log("delete Boxid" + boxId);
+        //console.log("delete Boxid" + boxId);
   
       // Count volumes with the same boxId
       const totalVolume = await Harvest.aggregate([

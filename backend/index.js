@@ -11,7 +11,7 @@ dotenv.config()
 const app = express();
 
 const uri = process.env['MONGODB_URI']
-const port  =8000;
+const port  =5000;
 
 const connect = async () =>{
     try{
@@ -22,22 +22,22 @@ const connect = async () =>{
     }
 }
 
-const printCurrentTime = () => {
-    const currentTime = new Date().toLocaleTimeString();
-    console.log("Current time:", currentTime);
-  };
+// const printCurrentTime = () => {
+//     const currentTime = new Date().toLocaleTimeString();
+//     console.log("Current time:", currentTime);
+//   };
   
-  // Function to repeat the printing every 4 minutes
-  const repeatFunction = (func, interval) => {
-    // Call the function immediately
-    func();
+//   // Function to repeat the printing every 4 minutes
+//   const repeatFunction = (func, interval) => {
+//     // Call the function immediately
+//     func();
   
-    // Set interval to repeat the function every specified time
-    setInterval(func, interval);
-  };
+//     // Set interval to repeat the function every specified time
+//     setInterval(func, interval);
+//   };
   
-  // Usage: Repeat printCurrentTime every 4 minutes (4 * 60 * 1000 milliseconds)
-  repeatFunction(printCurrentTime, 4 * 60 * 1000);
+//   // Usage: Repeat printCurrentTime every 4 minutes (4 * 60 * 1000 milliseconds)
+//   repeatFunction(printCurrentTime, 4 * 60 * 1000);
 
 mongoose.connection.on('disconnected', () => {
     console.log('MongoDb disconnected')

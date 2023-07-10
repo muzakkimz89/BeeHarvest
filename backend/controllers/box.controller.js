@@ -26,7 +26,7 @@ export const createBox = async (req, res, next) => {
 export const getBox = async (req, res, next) =>{
     const place = req.params.id
     try{
-        console.log("place id"+place);
+        //console.log("place id"+place);
         const boxes = await Box.find({ placeId: place });
         //console.log(boxes.length);
         res.status(200).json(boxes);
@@ -41,7 +41,7 @@ export const getBox = async (req, res, next) =>{
 export const getABox = async (req, res, next) => {
     const boxId = req.params.id;
     try {
-      console.log("boxId: " + boxId);
+      //console.log("boxId: " + boxId);
       const box = await Box.findOne({ _id: boxId });
       if (!box) {
         // If no box is found with the given boxId
@@ -58,7 +58,7 @@ export const getABox = async (req, res, next) => {
 
 export const deleteBox = async (req, res, next) =>{
     try{
-        console.log("Are you sure you want to delete")
+        //console.log("Are you sure you want to delete")
         await Box.findByIdAndDelete(req.params.id);
         res.status(200).json("Box sudah dihapus");
     }catch(err){
